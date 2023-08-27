@@ -92,39 +92,39 @@ public class JavaCommentModifierTest {
 
     }
 
-    // cuz the TestSample_Folder will not be committed to Github - this Test will fail 
-    // please manually examinate the output before using that output as the Test_Expect 
-    @Test
-    public void simpleCase__folder() {
-      String eclipse_workspace = "G:/wsp/eclipse_202304";
-      String projectName_in = "TestSample-TrafficSystemMock-ToRemoveComment";
-      String projectName_out = projectName_in + "-CommentRemoved-out";
-      String pathFolderAbsStr_ToRemoveComment_in = eclipse_workspace + "/" + projectName_in;
-      String pathFolderAbsStr_out = eclipse_workspace + "/" + projectName_out;
-
-      JavaCommentService.removeCodeComment_givenDirOfProject(pathFolderAbsStr_ToRemoveComment_in, pathFolderAbsStr_out);
-
-      String projectName_in_ori = projectName_in + " - ori";
-      String pathFolderAbsStr_ToRemoveComment_in_ori = eclipse_workspace + "/" + projectName_in_ori;
-      try {
-        DirEqualityUtil.verifySubtreeEquality(Paths.get(pathFolderAbsStr_ToRemoveComment_in), Paths.get(pathFolderAbsStr_ToRemoveComment_in_ori));
-      } catch (IOException e) {
-        throw new Error(e);
-      } catch (DirAreNotEqualException e) {
-        Assertions.fail("the original In_Folder should never be changed during the process :: \n" + e);
-      }
-
-      String projectName_out_expect = projectName_out + " - expectToBe";
-      String pathFolderAbsStr_out_expect = eclipse_workspace + "/" + projectName_out_expect;
-      try {
-        DirEqualityUtil.verifySubtreeEquality(Paths.get(pathFolderAbsStr_out), Paths.get(pathFolderAbsStr_out_expect));
-      } catch (IOException e) {
-        throw new Error(e);
-      } catch (DirAreNotEqualException e) {
-        Assertions.fail("(Out_Folder) Result of Remove Comment - Fail to meet expectation. :: \n" + e);
-      }
-
-    }
+    //    // cuz the TestSample_Folder will not be committed to Github - this Test will fail 
+    //    // please manually examinate the output before using that output as the Test_Expect 
+    //    @Test
+    //    public void simpleCase__folder() {
+    //      String eclipse_workspace = "G:/wsp/eclipse_202304";
+    //      String projectName_in = "TestSample-TrafficSystemMock-ToRemoveComment";
+    //      String projectName_out = projectName_in + "-CommentRemoved-out";
+    //      String pathFolderAbsStr_ToRemoveComment_in = eclipse_workspace + "/" + projectName_in;
+    //      String pathFolderAbsStr_out = eclipse_workspace + "/" + projectName_out;
+    //
+    //      JavaCommentService.removeCodeComment_givenDirOfProject(pathFolderAbsStr_ToRemoveComment_in, pathFolderAbsStr_out);
+    //
+    //      String projectName_in_ori = projectName_in + " - ori";
+    //      String pathFolderAbsStr_ToRemoveComment_in_ori = eclipse_workspace + "/" + projectName_in_ori;
+    //      try {
+    //        DirEqualityUtil.verifySubtreeEquality(Paths.get(pathFolderAbsStr_ToRemoveComment_in), Paths.get(pathFolderAbsStr_ToRemoveComment_in_ori));
+    //      } catch (IOException e) {
+    //        throw new Error(e);
+    //      } catch (DirAreNotEqualException e) {
+    //        Assertions.fail("the original In_Folder should never be changed during the process :: \n" + e);
+    //      }
+    //
+    //      String projectName_out_expect = projectName_out + " - expectToBe";
+    //      String pathFolderAbsStr_out_expect = eclipse_workspace + "/" + projectName_out_expect;
+    //      try {
+    //        DirEqualityUtil.verifySubtreeEquality(Paths.get(pathFolderAbsStr_out), Paths.get(pathFolderAbsStr_out_expect));
+    //      } catch (IOException e) {
+    //        throw new Error(e);
+    //      } catch (DirAreNotEqualException e) {
+    //        Assertions.fail("(Out_Folder) Result of Remove Comment - Fail to meet expectation. :: \n" + e);
+    //      }
+    //
+    //    }
 
   }
 }
