@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    tools {
-        // Install the Maven version configured as "M3" and add it to the path.
-        maven "M3"
-    }
+//     tools {
+//         // Install the Maven version configured as "M3" and add it to the path.
+//         maven "maven_394"
+//     }
 
     stages {
         stage('Build & Test') {
@@ -19,7 +19,7 @@ pipeline {
                 withEnv ( ['JENKINS_NODE_COOKIE=doNotKill'] ) {
                   bat "start /b java -jar ./target/JavaParserSub-0.0.1.jar"
                 }
-        	 }
+              }
     	   }
         }
     }
