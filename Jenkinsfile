@@ -39,7 +39,7 @@ pipeline {
           steps {
             sh 'ls -la /home/jenkins/agent/tools'
             sh 'ls -la /home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4'
-            sh '$PATH=/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH'
+            sh 'export PATH=/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH'
             sh 'echo $PATH' // path doesnt has Maven
             sh 'mvn --version || true' // << mvn not found 
           }
