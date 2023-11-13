@@ -5,18 +5,19 @@ pipeline {
     }
   }
 
-      tools {
-        maven "maven-v3.8.4"
-      }
-
   stages {
     stage('inside docker image') {
       agent {
         docker { 
-          image 'openjdk@sha256:d732b25fa8a6944d312476805d086aeaaa6c9e2fbc3aefd482b819d5e0e32e10' // https://hub.docker.com/layers/library/openjdk/17.0.2-jdk-slim/images/sha256-d732b25fa8a6944d312476805d086aeaaa6c9e2fbc3aefd482b819d5e0e32e10?context=explore
+          // image 'openjdk@sha256:d732b25fa8a6944d312476805d086aeaaa6c9e2fbc3aefd482b819d5e0e32e10' // https://hub.docker.com/layers/library/openjdk/17.0.2-jdk-slim/images/sha256-d732b25fa8a6944d312476805d086aeaaa6c9e2fbc3aefd482b819d5e0e32e10?context=explore
+          image 'eclipse-temurin@sha256:2419c9c7116601aee0c939888e2eed78e235d38f5f5e9e9f1d1d18d043df55eb' // https://hub.docker.com/layers/library/eclipse-temurin/17.0.9_9-jre-ubi9-minimal/images/sha256-2419c9c7116601aee0c939888e2eed78e235d38f5f5e9e9f1d1d18d043df55eb?context=explore
           args '-v /var/run/docker.sock:/var/run/docker.sock'
           reuseNode true
         }
+      }
+
+      tools {
+        maven "maven-v3.8.4"
       }
 
       stages {
