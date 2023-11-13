@@ -9,16 +9,16 @@ pipeline {
     stage('inside docker image') {
       agent {
         docker { 
-          label 'jenkinsAgent-jdk17-docker'
           image 'openjdk@sha256:d732b25fa8a6944d312476805d086aeaaa6c9e2fbc3aefd482b819d5e0e32e10' // https://hub.docker.com/layers/library/openjdk/17.0.2-jdk-slim/images/sha256-d732b25fa8a6944d312476805d086aeaaa6c9e2fbc3aefd482b819d5e0e32e10?context=explore
           args '-v /var/run/docker.sock:/var/run/docker.sock'
+          reuseNode true
         }
       }
 
       tools {
         maven "maven-v3.8.4"
       }
-      
+
       stages {
         stage('checkout') {
           steps {
