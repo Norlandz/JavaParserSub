@@ -52,6 +52,9 @@ pipeline {
               sh 'echo $PATH' // path doesnt has Maven
               sh 'mvn --version || true' // fails too (though I didnt config anything in the global one, just the below one like nodejs ...)
             }
+
+            sh 'false'
+            sh 'exit 1'
           }
         }
 
