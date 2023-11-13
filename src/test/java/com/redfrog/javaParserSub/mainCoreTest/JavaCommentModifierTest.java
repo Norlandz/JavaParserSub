@@ -47,7 +47,7 @@ public class JavaCommentModifierTest {
       } catch (ParseException e) {
         throw new Error(e);
       }
-      fileCode_CommentRemoved = fileCode_CommentRemoved.replaceAll("\\r\\n", "\n");
+      fileCode_CommentRemoved = fileCode_CommentRemoved.replaceAll("\\r\\n?", "\n");
       //      System.out.println(fileCode_CommentRemoved);
 
       String expect = "//_________________________\n"

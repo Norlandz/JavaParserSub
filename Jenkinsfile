@@ -13,8 +13,8 @@ pipeline {
           // dk some issue with above image -- container is not running // maybe cuz ec2 is amd64, must match?..
           // image 'eclipse-temurin@sha256:2419c9c7116601aee0c939888e2eed78e235d38f5f5e9e9f1d1d18d043df55eb' // https://hub.docker.com/layers/library/eclipse-temurin/17.0.9_9-jre-ubi9-minimal/images/sha256-2419c9c7116601aee0c939888e2eed78e235d38f5f5e9e9f1d1d18d043df55eb?context=explore
           // image 'openjdk@sha256:779635c0c3d23cc8dbab2d8c1ee4cf2a9202e198dfc8f4c0b279824d9b8e0f22' // https://hub.docker.com/layers/library/openjdk/17.0.2-jdk-slim/images/sha256-779635c0c3d23cc8dbab2d8c1ee4cf2a9202e198dfc8f4c0b279824d9b8e0f22?context=explore
-          // https://hub.docker.com/layers/library/maven/3.8.4-eclipse-temurin-17/images/sha256-0b27c7feef457b6773e078b0ab679d97a471d9fdebd07df3f9b0cdc762c5b4a6?context=explore
-          image 'maven@sha256:76b11de3a90a9dd4b2b1765850087296ec630c16636c91f0181d2fb7859f8502' // https://hub.docker.com/layers/library/maven/3.8.4-openjdk-17-slim/images/sha256-76b11de3a90a9dd4b2b1765850087296ec630c16636c91f0181d2fb7859f8502?context=explore
+          // image 'maven@sha256:76b11de3a90a9dd4b2b1765850087296ec630c16636c91f0181d2fb7859f8502' // https://hub.docker.com/layers/library/maven/3.8.4-openjdk-17-slim/images/sha256-76b11de3a90a9dd4b2b1765850087296ec630c16636c91f0181d2fb7859f8502?context=explore
+          image 'maven@sha256:0b27c7feef457b6773e078b0ab679d97a471d9fdebd07df3f9b0cdc762c5b4a6' // https://hub.docker.com/layers/library/maven/3.8.4-eclipse-temurin-17/images/sha256-0b27c7feef457b6773e078b0ab679d97a471d9fdebd07df3f9b0cdc762c5b4a6?context=explore
           args '-v /var/run/docker.sock:/var/run/docker.sock'
           reuseNode true
         }

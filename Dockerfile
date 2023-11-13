@@ -1,4 +1,4 @@
-FROM maven@sha256:76b11de3a90a9dd4b2b1765850087296ec630c16636c91f0181d2fb7859f8502
+FROM maven@sha256:0b27c7feef457b6773e078b0ab679d97a471d9fdebd07df3f9b0cdc762c5b4a6
 
 WORKDIR /usr/local/diskUsing/wsp/currApp
 COPY ./target/JavaParserSub-0.0.1.jar ./
