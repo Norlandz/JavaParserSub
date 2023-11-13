@@ -10,12 +10,12 @@ pipeline {
   // }
 
   stages {
-    stage('debug1') {
-      steps {
-        sh 'echo $PATH'
-        sh 'mvn --version || true' // works here
-      }
-    }
+    // stage('debug1') {
+    //   steps {
+    //     sh 'echo $PATH'
+    //     sh 'mvn --version || true' // works here, if tools top lv
+    //   }
+    // }
 
     stage('inside docker image') {
       agent {
@@ -29,6 +29,7 @@ pipeline {
         }
       }
 
+      // @pb: seems Maven Plugin is incompatible with Docker plugin
       // it wont work, doesnt matter if I place the tool inside; also, the mvn debug1 outside surely fail for this case
       tools {
         maven "maven-v3.8.4"
@@ -39,9 +40,14 @@ pipeline {
           steps {
             sh 'ls -la /home/jenkins/agent/tools'
             sh 'ls -la /home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4'
-            sh 'export PATH=/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH'
             sh 'echo $PATH' // path doesnt has Maven
             sh 'mvn --version || true' // << mvn not found 
+            sh '''
+            export PATH="/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH"'
+            mvn --version || true
+            '''
+            sh 'echo "PATH=/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH" >> ~/.bashrc'
+            sh 'mvn --version || true'
           }
         }
         stage('debug3') {
@@ -52,11 +58,10 @@ pipeline {
               sh 'echo $PATH' // path doesnt has Maven
               sh 'mvn --version || true' // fails too (though I didnt config anything in the global one, just the below one like nodejs ...)
             }
-
-            sh 'false'
-            sh 'exit 1'
           }
         }
+
+        stage('fail & quit') { steps { sh 'false' } } // sh 'exit 1'
 
         stage('checkout') {
           steps {
