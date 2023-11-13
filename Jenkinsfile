@@ -5,9 +5,9 @@ pipeline {
     }
   }
 
-  tools {
-    maven "maven-v3.8.4"
-  }
+  // tools {
+  //   maven "maven-v3.8.4"
+  // }
 
   stages {
     stage('debug1') {
@@ -30,9 +30,9 @@ pipeline {
       }
 
       // it wont work, doesnt matter if I place the tool inside; also, the mvn debug1 outside surely fail for this case
-      // ;not_working; tools {
-      // ;not_working;   maven "maven-v3.8.4"
-      // ;not_working; }
+      tools {
+        maven "maven-v3.8.4"
+      }
 
       stages {
         stage('debug2') {
@@ -47,7 +47,7 @@ pipeline {
             // https://plugins.jenkins.io/pipeline-maven/ manually installed // https://www.jenkins.io/doc/pipeline/steps/pipeline-maven/
             withMaven() {
               sh 'echo $PATH' // path doesnt has Maven
-              sh 'mvn --version || true' // 
+              sh 'mvn --version || true' // fails too (though I didnt config anything in the global one, just the below one like nodejs ...)
             }
           }
         }
