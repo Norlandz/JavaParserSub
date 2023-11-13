@@ -5,64 +5,28 @@ pipeline {
     }
   }
 
-  // tools {
-  //   maven "maven-v3.8.4"
-  // }
-
   stages {
-    // stage('debug1') {
-    //   steps {
-    //     sh 'echo $PATH'
-    //     sh 'mvn --version || true' // works here, if tools top lv
-    //   }
-    // }
-
     stage('inside docker image') {
       agent {
         docker { 
           // image 'openjdk@sha256:d732b25fa8a6944d312476805d086aeaaa6c9e2fbc3aefd482b819d5e0e32e10' // https://hub.docker.com/layers/library/openjdk/17.0.2-jdk-slim/images/sha256-d732b25fa8a6944d312476805d086aeaaa6c9e2fbc3aefd482b819d5e0e32e10?context=explore
           // dk some issue with above image -- container is not running // maybe cuz ec2 is amd64, must match?..
           // image 'eclipse-temurin@sha256:2419c9c7116601aee0c939888e2eed78e235d38f5f5e9e9f1d1d18d043df55eb' // https://hub.docker.com/layers/library/eclipse-temurin/17.0.9_9-jre-ubi9-minimal/images/sha256-2419c9c7116601aee0c939888e2eed78e235d38f5f5e9e9f1d1d18d043df55eb?context=explore
-          image 'openjdk@sha256:779635c0c3d23cc8dbab2d8c1ee4cf2a9202e198dfc8f4c0b279824d9b8e0f22' // https://hub.docker.com/layers/library/openjdk/17.0.2-jdk-slim/images/sha256-779635c0c3d23cc8dbab2d8c1ee4cf2a9202e198dfc8f4c0b279824d9b8e0f22?context=explore
+          // image 'openjdk@sha256:779635c0c3d23cc8dbab2d8c1ee4cf2a9202e198dfc8f4c0b279824d9b8e0f22' // https://hub.docker.com/layers/library/openjdk/17.0.2-jdk-slim/images/sha256-779635c0c3d23cc8dbab2d8c1ee4cf2a9202e198dfc8f4c0b279824d9b8e0f22?context=explore
+          // https://hub.docker.com/layers/library/maven/3.8.4-eclipse-temurin-17/images/sha256-0b27c7feef457b6773e078b0ab679d97a471d9fdebd07df3f9b0cdc762c5b4a6?context=explore
+          image 'maven@sha256:76b11de3a90a9dd4b2b1765850087296ec630c16636c91f0181d2fb7859f8502' // https://hub.docker.com/layers/library/maven/3.8.4-openjdk-17-slim/images/sha256-76b11de3a90a9dd4b2b1765850087296ec630c16636c91f0181d2fb7859f8502?context=explore
           args '-v /var/run/docker.sock:/var/run/docker.sock'
           reuseNode true
         }
       }
 
       // @pb: seems Maven Plugin is incompatible with Docker plugin
-      // it wont work, doesnt matter if I place the tool inside; also, the mvn debug1 outside surely fail for this case
-      tools {
-        maven "maven-v3.8.4"
-      }
-
+      // tools {
+      //   maven "maven-v3.8.4"
+      // }
+      //         stage('debug2') {@¦          steps {@¦            sh '''@¦            export PATH="/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH"@¦            mvn --version || true@¦            '''@¦          }@¦        }@¦        stage('debug3') {@¦          steps {@¦            // https://plugins.jenkins.io/maven-plugin/ recommended installed@¦            // https://plugins.jenkins.io/pipeline-maven/ manually installed // https://www.jenkins.io/doc/pipeline/steps/pipeline-maven/@¦            withMaven() {@¦              sh 'echo $PATH' // path doesnt has Maven@¦              sh 'mvn --version || true' // fails too (though I didnt config anything in the global one, just the below one like nodejs ...)@¦            }@¦          }@¦        }@¦@¦        stage('fail & quit') { steps { sh 'false' } } // sh 'exit 1'
+  
       stages {
-        stage('debug2') {
-          steps {
-            sh 'ls -la /home/jenkins/agent/tools'
-            sh 'ls -la /home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4'
-            sh 'echo $PATH' // path doesnt has Maven
-            sh 'mvn --version || true' // << mvn not found 
-            sh '''
-            export PATH="/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH"
-            mvn --version || true
-            '''
-            sh 'echo "PATH=/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH" >> ~/.bashrc'
-            sh 'mvn --version || true'
-          }
-        }
-        stage('debug3') {
-          steps {
-            // https://plugins.jenkins.io/maven-plugin/ recommended installed
-            // https://plugins.jenkins.io/pipeline-maven/ manually installed // https://www.jenkins.io/doc/pipeline/steps/pipeline-maven/
-            withMaven() {
-              sh 'echo $PATH' // path doesnt has Maven
-              sh 'mvn --version || true' // fails too (though I didnt config anything in the global one, just the below one like nodejs ...)
-            }
-          }
-        }
-
-        stage('fail & quit') { steps { sh 'false' } } // sh 'exit 1'
-
         stage('checkout') {
           steps {
             git branch: 'main', url: 'https://github.com/Norlandz/JavaParserSub' // @config[project name]
