@@ -10,6 +10,13 @@ pipeline {
       }
 
   stages {
+            stage('debug') {
+          steps {
+            sh 'echo $PATH'
+            sh 'mvn --version'
+          }
+        }
+
     stage('inside docker image') {
       agent {
         docker { 
@@ -22,7 +29,15 @@ pipeline {
         }
       }
 
+
       stages {
+        stage('debug2') {
+          steps {
+            sh 'echo $PATH'
+            sh 'mvn --version'
+          }
+        }
+
         stage('checkout') {
           steps {
             git branch: 'main', url: 'https://github.com/Norlandz/JavaParserSub' // @config[project name]
