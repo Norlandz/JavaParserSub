@@ -43,7 +43,7 @@ pipeline {
             sh 'echo $PATH' // path doesnt has Maven
             sh 'mvn --version || true' // << mvn not found 
             sh '''
-            export PATH="/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH"'
+            export PATH="/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH"
             mvn --version || true
             '''
             sh 'echo "PATH=/home/jenkins/agent/tools/hudson.tasks.Maven_MavenInstallation/maven-v3.8.4/bin:$PATH" >> ~/.bashrc'
