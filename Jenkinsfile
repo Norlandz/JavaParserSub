@@ -5,6 +5,10 @@ pipeline {
     }
   }
 
+      tools {
+        maven "maven-v3.8.4"
+      }
+
   stages {
     stage('inside docker image') {
       agent {
@@ -13,10 +17,6 @@ pipeline {
           args '-v /var/run/docker.sock:/var/run/docker.sock'
           reuseNode true
         }
-      }
-
-      tools {
-        maven "maven-v3.8.4"
       }
 
       stages {
