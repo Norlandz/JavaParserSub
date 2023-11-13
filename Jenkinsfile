@@ -5,17 +5,17 @@ pipeline {
     }
   }
 
-      tools {
-        maven "maven-v3.8.4"
-      }
+  tools {
+    maven "maven-v3.8.4"
+  }
 
   stages {
-            stage('debug') {
-          steps {
-            sh 'echo $PATH'
-            sh 'mvn --version'
-          }
-        }
+    stage('debug1') {
+      steps {
+        sh 'echo $PATH'
+        sh 'mvn --version || true' // works here
+      }
+    }
 
     stage('inside docker image') {
       agent {
@@ -29,12 +29,26 @@ pipeline {
         }
       }
 
+      // it wont work, doesnt matter if I place the tool inside; also, the mvn debug1 outside surely fail for this case
+      // ;not_working; tools {
+      // ;not_working;   maven "maven-v3.8.4"
+      // ;not_working; }
 
       stages {
         stage('debug2') {
           steps {
-            sh 'echo $PATH'
-            sh 'mvn --version'
+            sh 'echo $PATH' // path doesnt has Maven
+            sh 'mvn --version || true' // << mvn not found 
+          }
+        }
+        stage('debug3') {
+          steps {
+            // https://plugins.jenkins.io/maven-plugin/ recommended installed
+            // https://plugins.jenkins.io/pipeline-maven/ manually installed // https://www.jenkins.io/doc/pipeline/steps/pipeline-maven/
+            withMaven() {
+              sh 'echo $PATH' // path doesnt has Maven
+              sh 'mvn --version || true' // 
+            }
           }
         }
 
