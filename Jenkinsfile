@@ -74,8 +74,26 @@ pipeline {
     }
     stage('call (async) remote server to pull & run (deploy) docker image (using watchtower)') { // watchtower will do this, no need to _ special docker trigger / publish_over_ssh _
       steps {
-        sh 'echo "this curl will fail -- if watchtower is not up yet. \nwhich can happen at the first time of the whole project setup -- \n1. this script need to build the image to dockerhub \n2. docker-compose.yml file pulls the image and start up all containers \n3. watchtower will be started in that docker-compose.yml together \n-- once watchtower is up, all later builds will be able to call to watchtower no problem."'
-        sh 'curl -H "Authorization: Bearer tokenVal_WATCHTOWER_HTTP_API_TOKEN_toBeSentFromJenkins" 10.15.1.137:8080/v1/update' // FIXME @config the ip address need know ahead of time?...
+        script {
+          sh '''\
+          echo "this curl will fail -- if watchtower is not up yet. 
+            which can happen at the first time of the whole project setup -- 
+            1. this script need to build the image to dockerhub 
+            2. docker-compose.yml file pulls the image and start up all containers 
+            3. watchtower will be started in that docker-compose.yml together 
+            -- once watchtower is up, all later builds will be able to call to watchtower no problem."
+          '''.stripIndent()
+
+          def ipAddr_MainApp_withWatchtower = "10.14.1.11" // "mainApp.rff.com" // FIXME @config need use Dns instead of a fixed ip
+          sh """
+          curl -H "Authorization: Bearer tokenVal_WATCHTOWER_HTTP_API_TOKEN_toBeSentFromJenkins" --max-time 20 --location http://${ipAddr_MainApp_withWatchtower}:8686/v1/update
+          """ 
+        }
+      }
+    }
+    stage('clean up docker image volume') { 
+      steps {
+        sh 'yes | docker system prune'
       }
     }
     stage('done') {
